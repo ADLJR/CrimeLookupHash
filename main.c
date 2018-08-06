@@ -40,10 +40,8 @@ typedef struct Areas {
 int hash(HTKey key, int size) {
 	int hashValue = 0;
 	int numKey = atoi(key+4);
-	int areaKey = atoi(key+1);	// area of the ciry
+	int areaKey = atoi(key+1);				// area of the ciry
 	int letter = key[strlen(key) - 4];
-	//letter = letter - 'A';
-	//numKey = numKey + letter;
 	char *p = key;
 
 	while (*p != '\0') {
@@ -89,7 +87,6 @@ int searchHash(Crimes **crimesHash, char* userInput, int size) {
 		if (crimesHash[i]->Case == NULL) {
 			// show that the plate to search is unavailable
 			break;
-			// return -1;
 		}
 		else if (strcmp(crimesHash[i]->Case, userInput) == 0) {
 			counter = i;
@@ -99,7 +96,7 @@ int searchHash(Crimes **crimesHash, char* userInput, int size) {
 	return counter;
 }
 
-
+// function to build hash table
 void buildTableC(Crimes **CrimeTable, char *filename, int size, int* sizeTotal) {
 	Crimes *temp;		// temp struct to store all tokens
 	char *token;		// store everything in file
@@ -127,7 +124,7 @@ void buildTableC(Crimes **CrimeTable, char *filename, int size, int* sizeTotal) 
 			token = strtok(NULL, ",");
 			strcpy(temp->Calendar, token);	// storing Date and Time
 
-											// storing Beat, District, and Ward
+			// storing Beat, District, and Ward
 			token = strtok(NULL, ","); // get next token
 			temp->Beat = atoi(token);
 			token = strtok(NULL, ","); // get next token
@@ -147,7 +144,6 @@ void buildTableC(Crimes **CrimeTable, char *filename, int size, int* sizeTotal) 
 }
 
 // setting each value to null/ "empty-at-first"
-// template from previous homework
 Crimes **HashArray(int Sz) {
 	Crimes **A = (Crimes **)malloc(Sz * sizeof(Crimes *));
 
@@ -194,35 +190,6 @@ Areas *AreaStruct(char* filename) {
 	return A;
 }
 
-// getFileName: [TEMPLATE FROM PREVIOUS PROJECT]
-// Inputs a filename from the keyboard, make sure the file can be
-// opened, and returns the filename if so.  If the file cannot be
-// opened, an error message is output and the program is exited.
-char *getFileName() {
-	char filename[512];
-	int  fnsize = sizeof(filename) / sizeof(filename[0]);
-
-	// input filename from the keyboard:
-	fgets(filename, fnsize, stdin);
-	filename[strcspn(filename, "\r\n")] = '\0';  // strip EOL char(s):
-
-												 // make sure filename exists and can be opened:
-	FILE *infile = fopen(filename, "r");
-	if (infile == NULL)
-	{
-		printf("**Error: unable to open '%s'\n\n", filename);
-		exit(-1);
-	}
-
-	fclose(infile);
-
-	// duplicate and return filename:
-	char *s = (char *)malloc((strlen(filename) + 1) * sizeof(char));
-	strcpy(s, filename);
-
-	return s;
-}
-
 // OBTAIN SIZE OF FILENAME
 long getFileSizeInBytes(char *filename) {
 	FILE *file = fopen(filename, "r");
@@ -241,8 +208,8 @@ int main() {
 	// Header
 	printf("** Chicago Crime Lookup **\n");
 	// get names of files
-	char *CrimesFileName = getFileName();
-	char *AreasFileName = getFileName();
+	char *CrimesFileName = "Crimes.csv";
+	char *AreasFileName = "Areas.csv";
 
 	// size of each filename
 	int bytesC = getFileSizeInBytes(CrimesFileName);
